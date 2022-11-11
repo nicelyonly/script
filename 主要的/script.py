@@ -118,14 +118,6 @@ def convert_example(example, tokenizer, max_seq_length=512, is_test=False):
     sample['sorrow'] = np.array(example["sorrow"], dtype="float32")
 
     return sample
-max_seq_length=128
-trans_func = partial(
-        convert_example,
-        tokenizer=tokenizer,
-        max_seq_length=max_seq_length)
-trans_func
-train_ds=RoleDataset('train',trans_func)
-test_ds=RoleDataset('test',trans_func)
 
 # 创建迭代器函数
 def create_dataloader(dataset,
@@ -298,6 +290,15 @@ def predict(model,test_data_loader):
                 test_pred[col].extend(out2.numpy().tolist())
         print(test_pred)
     return test_pred
+
+max_seq_length=128
+trans_func = partial(
+        convert_example,
+        tokenizer=tokenizer,
+        max_seq_length=max_seq_length)
+trans_func
+train_ds=RoleDataset('train',trans_func)
+test_ds=RoleDataset('test',trans_func)
 
 # 训练以及测试
 for learning_rate in learning_rates:
